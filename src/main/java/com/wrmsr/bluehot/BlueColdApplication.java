@@ -14,7 +14,9 @@
 package com.wrmsr.bluehot;
 
 import io.dropwizard.Application;
+import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
+import org.apache.http.client.HttpClient;
 
 public class BlueColdApplication
         extends Application<BlueColdConfiguration>
@@ -22,7 +24,13 @@ public class BlueColdApplication
     public void run(BlueColdConfiguration configuration, Environment environment)
             throws Exception
     {
-        environment.jersey().register(new BlueColdResource());
+        HttpClient httpClient = new HttpClientBuilder(environment)
+                .using(configuration.getHttpClient())
+                .build("http-client");
+        environment.jersey().register(
+                new BlueColdResource(
+                        environment.getObjectMapper(),
+                        httpClient));
     }
 
     public static void main(String[] args)

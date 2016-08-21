@@ -13,9 +13,24 @@
  */
 package com.wrmsr.bluehot;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.client.HttpClientConfiguration;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public class BlueColdConfiguration
         extends Configuration
 {
+    @Valid
+    @NotNull
+    @JsonProperty("httpClient")
+    private HttpClientConfiguration httpClient = new HttpClientConfiguration();
+
+    @JsonProperty("httpClient")
+    public HttpClientConfiguration getHttpClient()
+    {
+        return httpClient;
+    }
 }
